@@ -3,7 +3,6 @@ using Assets.Scripts.Core.Saving;
 using Assets.Scripts.Core.Saving.Data;
 using Assets.Scripts.Entities.Buyable;
 using DVUnityUtilities;
-using Packages.DVVehicle.Entities.Paintjobs;
 using Packages.DVVehicle.Entities.Parts;
 using Packages.DVVehicle.Entities.Vehicles;
 using Packages.DVVehicle.Helpers;
@@ -72,10 +71,11 @@ namespace Assets.Scripts.UI.Garage.TuningMenu
                 var copy = Instantiate(_buyOrInstallButton);
 
                 copy.name = buyableObjectName;
-                copy.SetBuyableObject(obj, _buyedTuning.Contains(buyableObjectName));
+                copy.SetBuyableObject(obj, _saveSystem);
                 copy.transform.SetParent(_sectionTemplate.transform.parent, false);
                 copy.gameObject.SetActive(true);
-                copy.OnClicked += (arg1, arg2) => _tuningControl.TrySetOrBuyTuning(_veh, arg2);
+
+                copy.OnClicked += (arg1, arg2) => { _tuningControl.TrySetOrBuyTuning(_veh, arg2); };
 
                 _buttons.Add(copy.gameObject);
 
@@ -96,7 +96,7 @@ namespace Assets.Scripts.UI.Garage.TuningMenu
 
             if (VehicleHelper.IsHavePossiblePaintjobs(_veh, out var paintjobs))
             {
-                CreateSectionButton("Paintjobs", () => OpenMenuWithPaintjobs(paintjobs.Select(x=>x.Name)));
+                CreateSectionButton("Paintjobs", () => OpenMenuWithPaintjobs(paintjobs.Select(x => x.Name)));
             }
 
             if (VehicleHelper.IsHavePossibleAttaches(_veh, out var attaches))

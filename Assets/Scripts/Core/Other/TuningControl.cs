@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Core.Saving;
-using Assets.Scripts.Entities.Buyable;
+﻿using Assets.Scripts.Entities.Buyable;
 using Packages.DVVehicle.Entities.Paintjobs;
 using Packages.DVVehicle.Entities.Vehicles;
 using Packages.DVVehicle.Helpers;
@@ -10,42 +9,36 @@ namespace Assets.Scripts.Core.Other
 {
     internal class TuningControl : MonoBehaviour
     {
-        [Inject] private SaveSystem _saveSystem;
+        [Inject] private BuySystem _buySystem;
 
         public void TrySetOrBuyTuning(VehicleEntity veh, BuyableObjectData obj)
         {
-            if (_saveSystem.Load(out var saveData))
+            if (!_buySystem.IsBuyed(obj.Name))
             {
-                if (saveData.IsBuyed(obj.Name))
+                _buySystem.TryBuy(obj);
+            }
+            else
+            {
+                if (obj.ObjectType == "Attach")
                 {
-                    if (saveData.IsHaveInGameMoney(obj.InGamePrice) && saveData.IsHaveRealMoney(obj.RealPrice))
+                    if (VehicleHelper.IsAttachedObject(veh, obj.Name, out var attachedObjectPosition))
                     {
-                        saveData.AddBuyedObject(obj.Name);
+                        attachedObjectPosition.SetObject(null);
+                    }
+                    else if (VehicleHelper.IsHaveAttachPrefabInContainer(veh, obj.Name, out var vehicleAttachObjectData))
+                    {
+                        VehicleHelper.TryInstallAttach(veh, vehicleAttachObjectData, out _);
                     }
                 }
-                else
+                else if (obj.ObjectType == "Paintjob")
                 {
-                    if (obj.ObjectType == "Attach")
+                    if (VehicleHelper.IsPaintjobApplyed(veh, obj.Name, out VehiclePaintjobApplyable paintjobPlace))
                     {
-                        if (VehicleHelper.IsAttachedObject(veh, obj.Name, out var attachedObjectPosition))
-                        {
-                            attachedObjectPosition.SetObject(null);
-                        }
-                        else if (VehicleHelper.IsHaveAttachPrefabInContainer(veh, obj.Name, out var vehicleAttachObjectData))
-                        {
-                            VehicleHelper.TryInstallAttach(veh, vehicleAttachObjectData, out _);
-                        }
+                        paintjobPlace.SetPaintjob(null);
                     }
-                    else if(obj.ObjectType == "Paintjob")
+                    else if (VehicleHelper.IsHavePaintjobInContainer(veh, obj.Name, out PaintjobData paintjobData))
                     {
-                        if (VehicleHelper.IsPaintjobApplyed(veh, obj.Name, out VehiclePaintjobApplyable paintjobPlace))
-                        {
-                            paintjobPlace.SetPaintjob(null);
-                        }
-                        else if (VehicleHelper.IsHavePaintjobInContainer(veh, obj.Name, out PaintjobData paintjobData))
-                        {
-                            VehicleHelper.TryInstallPaintjob(veh, paintjobData, out _);
-                        }
+                        VehicleHelper.TryInstallPaintjob(veh, paintjobData, out _);
                     }
                 }
             }

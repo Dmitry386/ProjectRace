@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 namespace Assets.Scripts.Entities.Buyable
 {
@@ -10,9 +9,6 @@ namespace Assets.Scripts.Entities.Buyable
 
         public string ObjectType = "Paintjob";
 
-        public double InGamePrice = 100000;
-
-        [Tooltip("If RealPrice = 0, object will available without IAP")]
-        public double RealPrice = 0;
+        public int InGamePrice = 100000;
     }
 }

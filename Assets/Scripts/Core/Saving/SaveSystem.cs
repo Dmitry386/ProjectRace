@@ -16,7 +16,7 @@ namespace Assets.Scripts.Core.Saving
         {
             if (!Load(out _))
             {
-                _defaultSaveDataIfNoneSave.Name = Guid.NewGuid().ToString(); // todo: input name system in future...
+                _defaultSaveDataIfNoneSave.PlayerName = Guid.NewGuid().ToString(); // todo: input name system in future...
                 _loadedData = _defaultSaveDataIfNoneSave;
             }
         }

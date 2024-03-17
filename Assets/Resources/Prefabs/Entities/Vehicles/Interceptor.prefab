@@ -262,7 +262,6 @@ MonoBehaviour:
     - {fileID: 397109856601359580}
     AttachPositions:
     - {fileID: 2463626915972537068}
-    PaintjobPlaces: []
   Handling:
     Mass: 1500
     HandBrakeForce: 3000
@@ -309,7 +308,7 @@ MonoBehaviour:
   _meshRenderer: {fileID: 2311394}
   PlaceName: Body
   AvailablePaintjobs:
-  - Name: Interceptor Livery 1
+  - Name: Full Black Livery
     Materials:
     - {fileID: 2100000, guid: 3eedbea634f58cb4ca9bef2567570775, type: 2}
 --- !u!114 &6047558246371645620

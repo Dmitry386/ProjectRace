@@ -10,10 +10,9 @@ namespace Assets.Scripts.Core.Saving.Data
     [Serializable]
     internal class PlayerSaveData
     {
-        public string Name;
+        public string PlayerName;
 
-        public double InGameMoney;
-        public double RealMoney;
+        public int InGameMoney;
 
         public List<string> BuyedObjects = new();
         public List<VehicleSaveData> VehiclesActualTuningInfo = new();
@@ -51,14 +50,35 @@ namespace Assets.Scripts.Core.Saving.Data
             return saveData != null;
         }
 
-        public bool IsHaveRealMoney(double money)
-        {
-            return RealMoney >= money;
-        }
-
-        public bool IsHaveInGameMoney(double money)
+        public bool IsHaveInGameMoney(int money)
         {
             return InGameMoney >= money;
+        }
+
+        public bool TryTakeMoney(int money)
+        {
+            if (IsHaveInGameMoney(money))
+            {
+                InGameMoney -= money;
+                return true;
+            }
+            return false;
+        }
+
+        public bool TryGiveMoney(int money)
+        {
+            try
+            {
+                checked
+                {
+                    InGameMoney += money;
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

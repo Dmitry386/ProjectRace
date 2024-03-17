@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Entities.Buyable;
+﻿using Assets.Scripts.Core.Saving;
+using Assets.Scripts.Entities.Buyable;
 using System;
 using TMPro;
 using UnityEngine;
@@ -10,15 +11,14 @@ namespace Assets.Scripts.UI.Garage.TuningMenu
     {
         public event Action<BuyOrInstallButton, BuyableObjectData> OnClicked;
 
-        [SerializeField] private string _realMoneyFormat = "{0} DONATE";
         [SerializeField] private string _inGameMoneyFormat = "{0} $";
 
         [SerializeField] private TextMeshProUGUI _name;
-        [SerializeField] private TextMeshProUGUI _realMoneyPrice;
         [SerializeField] private TextMeshProUGUI _inGameMoneyPrice;
 
         [SerializeField] private Button _button;
         private BuyableObjectData _data;
+        private SaveSystem _saveSystem;
 
         private void Awake()
         {
@@ -28,19 +28,19 @@ namespace Assets.Scripts.UI.Garage.TuningMenu
         private void OnClick()
         {
             OnClicked?.Invoke(this, _data);
+            SetBuyableObject(_data, _saveSystem);
         }
 
-        public void SetBuyableObject(BuyableObjectData obj, bool isBuyed)
+        public void SetBuyableObject(BuyableObjectData obj, SaveSystem saveSystem)
         {
+            _saveSystem = saveSystem;
             _data = obj;
 
-            _realMoneyPrice.text = string.Empty;
             _inGameMoneyPrice.text = string.Empty;
             _name.text = obj.Name;
 
-            if (!isBuyed)
+            if (saveSystem.Load(out var save) && !save.IsBuyed(obj.Name))
             {
-                _realMoneyPrice.text = string.Format(_realMoneyFormat, obj.RealPrice.ToString());
                 _inGameMoneyPrice.text = string.Format(_inGameMoneyFormat, obj.InGamePrice.ToString());
             }
         }
