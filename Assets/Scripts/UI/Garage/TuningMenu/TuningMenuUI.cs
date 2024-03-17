@@ -96,7 +96,7 @@ namespace Assets.Scripts.UI.Garage.TuningMenu
 
             if (VehicleHelper.IsHavePossiblePaintjobs(_veh, out var paintjobs))
             {
-                CreateSectionButton("Paintjobs", () => OpenMenuWithPaintjobs(paintjobs.Select(x => x.Name)));
+                CreateSectionButton("Paintjob", () => OpenMenuWithPaintjobs(paintjobs.Select(x => x.Name)));
             }
 
             if (VehicleHelper.IsHavePossibleAttaches(_veh, out var attaches))
