@@ -11,7 +11,7 @@ namespace Assets.Scripts.Core.Networking.NetworkControllers
     internal class PhotonNetworkControl : MonoBehaviourPunCallbacks, INetworkControl
     {
         public NetworkStatus NetStatus { get; private set; }
-        
+
         [SerializeField] private bool _autoStartHost = true;
         [Inject] private SaveSystem _saveSystem;
 
@@ -22,8 +22,10 @@ namespace Assets.Scripts.Core.Networking.NetworkControllers
 
         private void Start()
         {
+            PhotonNetwork.LogLevel = PunLogLevel.Full;
             PhotonNetwork.ConnectUsingSettings();
-            if (_autoStartHost) StartHost();
+
+            //if (_autoStartHost) StartHost();
         }
 
         public string GetNickName()
@@ -40,6 +42,7 @@ namespace Assets.Scripts.Core.Networking.NetworkControllers
 
         public void Connect(string address)
         {
+            StopHost();
             PhotonNetwork.JoinRoom(address);
         }
 
@@ -47,6 +50,7 @@ namespace Assets.Scripts.Core.Networking.NetworkControllers
         {
             if (_saveSystem.Load(out var save))
             {
+                if (PhotonNetwork.InRoom) Disconnect();
                 PhotonNetwork.CreateRoom($"{save.PlayerName}");
             }
         }
@@ -55,7 +59,7 @@ namespace Assets.Scripts.Core.Networking.NetworkControllers
         {
             try
             {
-                PhotonNetwork.Disconnect();
+                PhotonNetwork.LeaveRoom();
             }
             catch (System.Exception ex)
             {

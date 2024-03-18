@@ -14,6 +14,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.dmitry386.dvmessageboxes": {
+      "version": "file:DVMessageBoxes",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.dmitry386.dvtimecycle": {
       "version": "file:DVTimecycle",
       "depth": 0,
