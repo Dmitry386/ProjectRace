@@ -32,7 +32,7 @@ namespace Packages.DVMessageBoxes.Source.Wrappers
                 DialogHelper.SetButtonTextOrDeactivate(_button2, dial.Button2);
 
                 RegisterButtonListener(_button1, dial.Act1, 0);
-                RegisterButtonListener(_button2, dial.Act2, 1); 
+                RegisterButtonListener(_button2, dial.Act2, 1);
             }
         }
 

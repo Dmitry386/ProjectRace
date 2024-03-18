@@ -18,14 +18,6 @@ namespace Packages.DVMessageBoxes.Source.Dialogs
         {
         }
 
-        public MessageDialog(string caption, string msg, string button1 = "Apply", string button2 = "Cancel")
-        {
-            this.Caption = caption;
-            this.Message = msg;
-            this.Button1 = button1;
-            this.Button2 = button2;
-        }
-
         public MessageDialog(string caption, string msg, string button1 = "Apply", string button2 = "Retry", string button3 = "Cancel", Action act1 = null, Action act2 = null, Action act3 = null)
         {
             this.Caption = caption;

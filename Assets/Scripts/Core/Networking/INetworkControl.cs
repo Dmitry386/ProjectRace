@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Core.Networking.Definitions;
-using System.Collections.Generic;
 
 namespace Assets.Scripts.Core.Networking
 {
@@ -12,7 +11,11 @@ namespace Assets.Scripts.Core.Networking
         public void StopHost();
         public void Kick(string playerName);
 
+        public NetworkStatus GetNetworkStatus();
+        public string GetCurrentAddress();
+
         public bool IsHavePlayer(string name, out NetworkPlayerInfo player);
         public NetworkPlayerInfo[] GetPlayers();
+        public int GetCurrentPlayerPing();
     }
 }

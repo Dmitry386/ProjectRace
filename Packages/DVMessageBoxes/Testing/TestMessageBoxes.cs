@@ -8,7 +8,8 @@ public class TestMessageBoxes : MonoBehaviour
     {
         new MessageDialog("Caption", "Message Test Text text text", "Button1", "Button2", "Button3").Show().OnResponse += OnResponse;
         new InputDialog("Caption", "Message Test Text text text", "Button1", "Button2").Show().OnResponse += OnResponse;
-        new ListDialog("Caption", "Button1", "Button2").Show().OnResponse += OnResponse;
+
+        new ListDialog("Caption", "Button1", "Button2").AddValues(new string[] { "el1", "el2", "el3", "el4" }).Show().OnResponse += OnResponse;
         new TabListDialog("Caption", "Button1", "Button2").Show().OnResponse += OnResponse;
     }
 

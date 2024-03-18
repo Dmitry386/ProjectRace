@@ -27,7 +27,7 @@ namespace Packages.DVMessageBoxes.Source.Core.Controls
             }
 
             _instance = this;
-            //DontDestroyOnLoad(this.gameObject);
+            // DontDestroyOnLoad(this.gameObject);
 
             foreach (var item in _wrappers)
             {

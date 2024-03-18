@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Core.Networking.Definitions;
 using Assets.Scripts.Core.Saving;
+using Packages.DVMessageBoxes.Source.Dialogs;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace Assets.Scripts.Core.Networking.NetworkControllers
         private void Start()
         {
             PhotonNetwork.LogLevel = PunLogLevel.Full;
+            PhotonNetwork.EnableCloseConnection = true;
             PhotonNetwork.ConnectUsingSettings();
 
             //if (_autoStartHost) StartHost();
@@ -42,15 +44,32 @@ namespace Assets.Scripts.Core.Networking.NetworkControllers
 
         public void Connect(string address)
         {
-            StopHost();
-            PhotonNetwork.JoinRoom(address);
+            if (GetNetworkStatus() == NetworkStatus.None)
+            {
+                PhotonNetwork.JoinRoom(address);
+            }
+            else
+            {
+                new MessageDialog("Error", "Impossible to connect. Please close your room.", null, null, "Ok").Show();
+            }
+        }
+
+        public void StartOrStopHost()
+        {
+            if (GetNetworkStatus() != NetworkStatus.None)
+            {
+                Disconnect();
+            }
+            else
+            {
+                StartHost();
+            }
         }
 
         public void StartHost()
         {
             if (_saveSystem.Load(out var save))
             {
-                if (PhotonNetwork.InRoom) Disconnect();
                 PhotonNetwork.CreateRoom($"{save.PlayerName}");
             }
         }
@@ -124,10 +143,27 @@ namespace Assets.Scripts.Core.Networking.NetworkControllers
             return PhotonNetwork.PlayerList.Select(x => new NetworkPlayerInfo() { Name = x.NickName, NetObject = x }).ToArray();
         }
 
-        private void OnDestroy()
+        //private void OnDestroy()
+        //{ 
+        //    Disconnect();
+        //}
+
+        public NetworkStatus GetNetworkStatus()
         {
-            StopHost();
-            Disconnect();
+            //if(PhotonNetwork.NetworkClientState ==  
+            if (PhotonNetwork.IsMasterClient) return NetworkStatus.Host;
+            else if (PhotonNetwork.InRoom) return NetworkStatus.Client;
+            else return NetworkStatus.None;
+        }
+
+        public string GetCurrentAddress()
+        {
+            return PhotonNetwork.CurrentRoom?.Name;
+        }
+
+        public int GetCurrentPlayerPing()
+        {
+            return PhotonNetwork.GetPing();
         }
     }
 }

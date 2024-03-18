@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Assets.Scripts.Core.Networking.Definitions
+﻿namespace Assets.Scripts.Core.Networking.Definitions
 {
-    internal enum NetworkStatus
+    public enum NetworkStatus
     {
         None,
         Client,

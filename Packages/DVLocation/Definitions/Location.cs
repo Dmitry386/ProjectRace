@@ -7,14 +7,6 @@ namespace Assets.Scripts.World.Locations
     {
         [SerializeField] private string _customName = string.Empty;
 
-        private void Awake()
-        {
-            if (string.IsNullOrEmpty(_customName))
-            {
-                _customName = StringUtils.FromSceneNameToObjectName(name);
-            }
-        }
-
         private void OnDestroy()
         {
             GameObject.Destroy(gameObject);
@@ -22,7 +14,14 @@ namespace Assets.Scripts.World.Locations
 
         public override string ToString()
         {
-            return _customName;
+            if (string.IsNullOrEmpty(_customName))
+            {
+                return StringUtils.FromSceneNameToObjectName(name);
+            }
+            else
+            {
+                return _customName;
+            }
         }
     }
 }
