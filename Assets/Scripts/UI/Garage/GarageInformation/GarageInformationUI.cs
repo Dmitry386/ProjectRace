@@ -32,7 +32,7 @@ namespace Assets.Scripts.UI.Garage.GarageInformation
         {
             if (_saveSystem.Load(out var save))
             {
-                var veh = _vehSwitcher.GetSelectedVehicleInstance();
+                var veh = _vehSwitcher.GetSelectedVehiclePrefab();
 
                 _playerName.text = save.PlayerName;
                 _vehicleName.text = veh?.ToString();

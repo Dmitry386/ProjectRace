@@ -13,7 +13,9 @@ namespace Assets.Scripts.Core.Other
         [SerializeField] private Transform _spawnVehicleParent;
 
         private VehicleEntity[] _allGameVehiclesPrefabs;
-        private VehicleEntity _selected;
+
+        private VehicleEntity _spawnedPrefab;
+        private VehicleEntity _activePrefab;
 
         private void Start()
         {
@@ -35,22 +37,24 @@ namespace Assets.Scripts.Core.Other
 
         public void SetSelected(VehicleEntity entity)
         {
-            var last_veh = _selected;
+            var last_veh = _spawnedPrefab;
 
-            if (_selected)
+            if (_spawnedPrefab)
             {
-                GameObject.Destroy(_selected.gameObject);
-                _selected = null;
+                GameObject.Destroy(_spawnedPrefab.gameObject);
+                _spawnedPrefab = null;
+                _activePrefab = null;
             }
 
             if (entity)
             {
-                _selected = GameObject.Instantiate(entity);
-                _selected.transform.SetParent(_spawnVehicleParent, true);
-                _selected.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                _spawnedPrefab = GameObject.Instantiate(entity);
+                _spawnedPrefab.transform.SetParent(_spawnVehicleParent, true);
+                _spawnedPrefab.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                _activePrefab = entity;
             }
 
-            if (last_veh != _selected) OnVehicleChanged?.Invoke(this);
+            if (last_veh != _spawnedPrefab) OnVehicleChanged?.Invoke(this);
         }
 
         public void SwitchVehicle(int side)
@@ -61,13 +65,13 @@ namespace Assets.Scripts.Core.Other
 
         public int GetSelectedVehicleId()
         {
-            if (!_selected) return -1;
-            return Array.IndexOf(_allGameVehiclesPrefabs, _selected);
+            if (!_activePrefab) return -1;
+            return Array.IndexOf(_allGameVehiclesPrefabs, _activePrefab);
         }
 
-        public VehicleEntity GetSelectedVehicleInstance()
+        public VehicleEntity GetSelectedVehiclePrefab()
         {
-            return _selected;
+            return _activePrefab;
         }
     }
 }

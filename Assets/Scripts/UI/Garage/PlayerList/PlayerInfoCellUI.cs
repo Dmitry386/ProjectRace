@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Core.Networking;
 using Assets.Scripts.Core.Networking.Definitions;
-using Photon.Realtime;
 using System;
 using TMPro;
 using UnityEngine;
@@ -33,11 +32,8 @@ namespace Assets.Scripts.UI.Garage.PlayerList
             _netData = netData;
             _playerName.text = netData.Name;
 
-            if (netData.NetObject is Player player)
-            {
-                _ping.text = netControl.GetCurrentPlayerPing().ToString(); // todo: НАЙДИ ПИНГ!!!        
-                _kickButton.gameObject.SetActive(canKickAnyone);
-            }
+            _ping.text = netControl.GetCurrentPlayerPing().ToString();
+            _kickButton.gameObject.SetActive(canKickAnyone);
         }
 
         private void OnDestroy()

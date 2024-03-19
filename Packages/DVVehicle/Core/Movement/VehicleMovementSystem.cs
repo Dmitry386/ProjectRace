@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Packages.DVVehicle.Core.Movement
 {
     [RequireComponent(typeof(VehicleEntity))]
-    internal class VehicleMovementSystem : MonoBehaviour
+    public class VehicleMovementSystem : MonoBehaviour
     {
         private VehicleEntity _veh;
         private Rigidbody _rb;

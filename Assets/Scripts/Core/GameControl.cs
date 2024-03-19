@@ -16,6 +16,18 @@ namespace Assets.Scripts.Core
         [Inject] private INetworkControl _networkControl;
         [Inject] private LocationSystem _locationSystem;
 
+        [Inject] private DiContainer _container;
+
+        private void Awake()
+        {
+            _locationSystem.InstantiateMethod = InstantiateLocationMethod;
+        }
+
+        private Location InstantiateLocationMethod(Location location)
+        { 
+            return _container.InstantiatePrefabForComponent<Location>(location);
+        }
+
         public void ShowConnectDialog()
         {
             new InputDialog("Connect to", "Enter the username you want to connect to. It is indicated at the top right of the garage screen.").Show().OnResponse += OnInputedConnectAddress;
@@ -53,6 +65,7 @@ namespace Assets.Scripts.Core
                 catch (Exception ex)
                 {
                     new MessageDialog("Error", ex.Message, "Ok", null, null).Show();
+                    Debug.LogException(ex);
                 }
             }
         }

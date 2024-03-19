@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Core.Networking.Definitions;
+using UnityEngine;
 
 namespace Assets.Scripts.Core.Networking
 {
@@ -17,5 +18,8 @@ namespace Assets.Scripts.Core.Networking
         public bool IsHavePlayer(string name, out NetworkPlayerInfo player);
         public NetworkPlayerInfo[] GetPlayers();
         public int GetCurrentPlayerPing();
+
+        public GameObject Instantiate(GameObject prefab, Vector3 pos, Quaternion rot);
+        public void DestroyGameObject(GameObject gameObject);
     }
 }

@@ -21,7 +21,10 @@ namespace Assets.Scripts.World.Locations
         {
             UnloadLocation();
 
-            _current = InstantiateMethod.Invoke(locationPrefab);
+            if (locationPrefab)
+            {
+                _current = InstantiateMethod.Invoke(locationPrefab);
+            }
             OnLocationChanged?.Invoke(_current);
         }
 

@@ -4,6 +4,7 @@ using Packages.DVMessageBoxes.Source.Dialogs;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Linq;
+using System.Net;
 using UnityEngine;
 using Zenject;
 
@@ -11,23 +12,14 @@ namespace Assets.Scripts.Core.Networking.NetworkControllers
 {
     internal class PhotonNetworkControl : MonoBehaviourPunCallbacks, INetworkControl
     {
-        public NetworkStatus NetStatus { get; private set; }
-
-        [SerializeField] private bool _autoStartHost = true;
         [Inject] private SaveSystem _saveSystem;
-
-        private void Awake()
-        {
-            PhotonNetwork.NickName = GetNickName();
-        }
 
         private void Start()
         {
+            PhotonNetwork.NickName = GetNickName();
             PhotonNetwork.LogLevel = PunLogLevel.Full;
             PhotonNetwork.EnableCloseConnection = true;
             PhotonNetwork.ConnectUsingSettings();
-
-            //if (_autoStartHost) StartHost();
         }
 
         public string GetNickName()
@@ -143,14 +135,8 @@ namespace Assets.Scripts.Core.Networking.NetworkControllers
             return PhotonNetwork.PlayerList.Select(x => new NetworkPlayerInfo() { Name = x.NickName, NetObject = x }).ToArray();
         }
 
-        //private void OnDestroy()
-        //{ 
-        //    Disconnect();
-        //}
-
         public NetworkStatus GetNetworkStatus()
         {
-            //if(PhotonNetwork.NetworkClientState ==  
             if (PhotonNetwork.IsMasterClient) return NetworkStatus.Host;
             else if (PhotonNetwork.InRoom) return NetworkStatus.Client;
             else return NetworkStatus.None;
@@ -164,6 +150,16 @@ namespace Assets.Scripts.Core.Networking.NetworkControllers
         public int GetCurrentPlayerPing()
         {
             return PhotonNetwork.GetPing();
+        }
+
+        public GameObject Instantiate(GameObject prefab, Vector3 pos, Quaternion rot)
+        {
+            return PhotonNetwork.Instantiate(prefab.name, pos, rot);
+        }
+
+        public void DestroyGameObject(GameObject gameObject)
+        {
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Assets.Scripts.UI.Garage.TuningMenu
 
         private List<string> _buyedTuning => _saveData.BuyedObjects;
         private List<GameObject> _buttons = new();
-        private VehicleEntity _veh => _vehicleSwitcher.GetSelectedVehicleInstance();
+        private VehicleEntity _veh => _vehicleSwitcher.GetSelectedVehiclePrefab();
 
         private void Awake()
         {
