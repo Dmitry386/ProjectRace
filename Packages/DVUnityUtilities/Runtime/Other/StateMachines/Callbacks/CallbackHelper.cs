@@ -8,28 +8,7 @@ namespace DVUnityUtilities.Other.StateMachines.Callbacks
     {
         public static void HandleStateChanged(StateChangeEventArgs args, List<StateChangedAction> stateActions)
         {
-            foreach (var stateAction in stateActions)
-            {
-                HandleStateChanged(args, stateAction);
-            }
-        }
-
-        public static void HandleStateChanged(StateChangeEventArgs args, StateChangedAction stateAction)
-        {
-            if (stateAction.OnStateStatus == StateChangeStatus.Inactive)
-            {
-                if (stateAction.StateName == args.OldState)
-                {
-                    ExecuteStateActions(stateAction);
-                }
-            }
-            else if (stateAction.OnStateStatus == StateChangeStatus.Active)
-            {
-                if (stateAction.StateName == args.NewState)
-                {
-                    ExecuteStateActions(stateAction);
-                }
-            }
+            ExecuteAllStateActions(stateActions, args.StateMachine);
         }
 
         public static void ExecuteStateActions(StateChangedAction stateAction)

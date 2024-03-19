@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.World.Locations;
+﻿using Assets.Scripts.Core.Networking.Definitions;
+using Assets.Scripts.World.Locations;
 using Photon.Pun;
 using UnityEngine;
 using Zenject;
@@ -17,17 +18,16 @@ namespace Assets.Scripts.Core.Networking.Sync
         private void Awake()
         {
             _view = GetComponent<PhotonView>();
-            _locationSystem.OnLocationChanged += OnLocationChanged;
         }
 
-        private void OnLocationChanged(Location obj)
+        private void Update()
         {
-            UpdateLocationSync();
+            UpdateCurrentLocationAndSync();
         }
 
-        private void UpdateLocationSync()
+        private void UpdateCurrentLocationAndSync()
         {
-            if (_netControl.GetNetworkStatus() == Definitions.NetworkStatus.Host)
+            if (_netControl.GetNetworkStatus() == NetworkStatus.Host)
             {
                 var currentLocation = _locationSystem.GetCurrentLocation();
 
@@ -35,6 +35,13 @@ namespace Assets.Scripts.Core.Networking.Sync
                 {
                     _lastSyncMap = currentLocation;
                     SyncMapForAllPlayers(_lastSyncMap?.ToString());
+                }
+            }
+            else if (_netControl.GetNetworkStatus() == NetworkStatus.None)
+            {
+                if (_locationSystem.GetCurrentLocation() != null)
+                {
+                    _locationSystem.SetLocation(locationPrefab: null);
                 }
             }
         }
@@ -52,16 +59,11 @@ namespace Assets.Scripts.Core.Networking.Sync
         [PunRPC]
         private void SyncMapRPC(string mapName)
         {
-            if (_netControl.GetNetworkStatus() == Definitions.NetworkStatus.Client)
+            if (_netControl.GetNetworkStatus() == NetworkStatus.Client)
             {
                 _locationSystem.SetLocation(mapName);
                 Debug.Log($"Location synced to {mapName}");
             }
-        }
-
-        private void OnDestroy()
-        {
-            _locationSystem.OnLocationChanged -= OnLocationChanged;
         }
     }
 }

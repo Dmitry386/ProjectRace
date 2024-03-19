@@ -3,6 +3,7 @@ using Assets.Scripts.Core.Saving;
 using Assets.Scripts.Core.Saving.Data;
 using Assets.Scripts.Entities.Buyable;
 using DVUnityUtilities;
+using Packages.DVVehicle.Core.Serialization;
 using Packages.DVVehicle.Entities.Parts;
 using Packages.DVVehicle.Entities.Vehicles;
 using Packages.DVVehicle.Helpers;
@@ -48,6 +49,18 @@ namespace Assets.Scripts.UI.Garage.TuningMenu
         private void OnVehicleSelectionChanged(VehicleSwitcher arg0)
         {
             OpenMainPage();
+            LoadSavedTuningForCurrentVehicle();
+        }
+
+        private void LoadSavedTuningForCurrentVehicle()
+        {
+            if (_saveSystem.Load(out var save))
+            {
+                if (save.IsHaveVehicleSaveInfo(_veh.ToString(), out var saveData))
+                {
+                    VehicleSerialization.ApplyTuning(_veh, saveData.Tuning);
+                }
+            }
         }
 
         private Button CreateSectionButton(string objName, Action act)
@@ -75,7 +88,11 @@ namespace Assets.Scripts.UI.Garage.TuningMenu
                 copy.transform.SetParent(_sectionTemplate.transform.parent, false);
                 copy.gameObject.SetActive(true);
 
-                copy.OnClicked += (arg1, arg2) => { _tuningControl.TrySetOrBuyTuning(_veh, arg2); };
+                copy.OnClicked += (arg1, arg2) =>
+                {
+                    _tuningControl.TrySetOrBuyTuning(_veh, arg2);
+                    if (_saveSystem.Load(out var save)) save.UpdateVehicleTuningInfoFromVehicleEntity(_veh);
+                };
 
                 _buttons.Add(copy.gameObject);
 
