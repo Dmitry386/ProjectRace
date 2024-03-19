@@ -2,6 +2,8 @@
 using Assets.Scripts.Core.Networking.NetworkControllers;
 using Assets.Scripts.Core.Networking.Sync;
 using Assets.Scripts.Core.Other;
+using Assets.Scripts.Core.Other.Awards;
+using Assets.Scripts.Core.Other.DriftPoints;
 using Assets.Scripts.Core.Saving;
 using Assets.Scripts.Entities.Buyable;
 using Assets.Scripts.World.Locations;
@@ -20,6 +22,8 @@ namespace Assets.Scripts.Core
             ContainerBindInstance<TuningControl>();
             ContainerBindInstance<LocationSystem>();
             ContainerBindInstance<SyncPlayerSpawn>();
+            ContainerBindInstance<VehicleDriftGlobalController>();
+            ContainerBindInstance<GameAwardSystem>();
 
             Container.BindInstance<INetworkControl>(GameObject.FindAnyObjectByType<PhotonNetworkControl>());
         }

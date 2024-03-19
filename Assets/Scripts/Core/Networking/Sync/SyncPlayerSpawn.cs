@@ -19,6 +19,7 @@ namespace Assets.Scripts.Core.Networking.Sync
         [Inject] private VehicleSwitcher _vehicleSwitcher;
         [Inject] private INetworkControl _networkControl;
         [Inject] private LocationSystem _locationSystem;
+        [Inject] private DiContainer _diContainer;
 
         private PlayerControllerEntity _localPlayer;
         private VehicleEntity _localVehicle;
@@ -77,6 +78,7 @@ namespace Assets.Scripts.Core.Networking.Sync
         private T SpawnObject<T>(T prefab, Transform spawnPoint) where T : Component
         {
             var obj = _networkControl.Instantiate(prefab.gameObject, spawnPoint.position, spawnPoint.rotation);
+            _diContainer.InjectGameObject(obj);
             return obj.GetComponent<T>();
         }
 

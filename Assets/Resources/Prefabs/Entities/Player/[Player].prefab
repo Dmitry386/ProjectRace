@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4800289461103719344}
   - component: {fileID: 2715849403622827946}
   - component: {fileID: 7546451062220505652}
+  - component: {fileID: 1503218280953334600}
   m_Layer: 0
   m_Name: '[Player]'
   m_TagString: Untagged
@@ -49,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _vehicleParentTransform: {fileID: 4576673738444162615}
   _camPrefab: {fileID: 5114310573288561345, guid: 570160c4cc4bbb7469bcca5d2cb09998, type: 3}
+  _driftCounter: {fileID: 1503218280953334600}
 --- !u!114 &7546451062220505652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,6 +73,19 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1503218280953334600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2425171762298782535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fe60b21e1fef8743b530bad94d7172f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _registerDriftPointsOnDestroy: 1
 --- !u!1 &6386574707363224546
 GameObject:
   m_ObjectHideFlags: 0

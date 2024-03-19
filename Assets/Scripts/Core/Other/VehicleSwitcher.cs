@@ -13,7 +13,6 @@ namespace Assets.Scripts.Core.Other
         [SerializeField] private Transform _spawnVehicleParent;
 
         private VehicleEntity[] _allGameVehiclesPrefabs;
-
         private VehicleEntity _spawnedPrefab;
         private VehicleEntity _activePrefab;
 
