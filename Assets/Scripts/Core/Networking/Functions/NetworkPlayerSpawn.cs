@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Core.Other;
-using Assets.Scripts.Core.Saving;
 using Assets.Scripts.Entities.Players;
 using Assets.Scripts.World.Locations;
+using Cinemachine;
 using Packages.DVVehicle.Entities.Vehicles;
 using Photon.Pun;
 using UnityEngine;
@@ -13,14 +13,15 @@ namespace Assets.Scripts.Core.Networking.Functions
     internal class NetworkPlayerSpawn : MonoBehaviourPunCallbacks
     {
         [SerializeField] private PlayerControllerEntity _playerControllerPrefab;
+        [SerializeField] private CinemachineVirtualCamera _virtualCameraPrefab;
 
         [Inject] private INetworkControl _networkControl;
         [Inject] private LocationSystem _locationSystem;
-        [Inject] private SaveSystem _saveSystem;
         [Inject] private VehicleSwitcher _vehicleSwitcher;
 
         private PlayerControllerEntity _localPlayer;
         private VehicleEntity _localVehicle;
+
         private int _nextSpawnPointId = 0;
 
         private void Start()
@@ -34,10 +35,10 @@ namespace Assets.Scripts.Core.Networking.Functions
             {
                 if (IsHaveFreeSpawnPoint(out var spawnPoint))
                 {
-                    var localPlayer = SpawnObject<PlayerControllerEntity>(_playerControllerPrefab, spawnPoint);
-                    var vehicle = SpawnObject<VehicleEntity>(_vehicleSwitcher.GetSelectedVehiclePrefab(), spawnPoint);
+                    _localPlayer = SpawnObject(_playerControllerPrefab, spawnPoint);
+                    _localVehicle = SpawnObject(_vehicleSwitcher.GetSelectedVehiclePrefab(), spawnPoint);
 
-                    localPlayer.SetControllableVehicle(vehicle);
+                    _localPlayer.SetControllableVehicle(_localVehicle);
                 }
             }
         }

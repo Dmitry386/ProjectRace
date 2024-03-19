@@ -8,10 +8,11 @@ namespace Assets.Scripts.Entities.Players
     internal class PlayerControllerEntity : MonoBehaviour
     {
         [SerializeField] private Transform _vehicleParentTransform;
-        [SerializeField] private CinemachineVirtualCamera _cam;
+        [SerializeField] private CinemachineVirtualCamera _camPrefab;
 
         private VehicleEntity _veh;
         private VehicleMovementSystem _moveSystem;
+        private CinemachineVirtualCamera _cam;
 
         public void SetControllableVehicle(VehicleEntity veh)
         {
@@ -19,12 +20,16 @@ namespace Assets.Scripts.Entities.Players
 
             if (_veh)
             {
+                if (!_cam) _cam = Instantiate(_camPrefab);
+
                 _moveSystem = _veh.GetComponent<VehicleMovementSystem>();
                 _cam.Follow = _veh.transform;
                 _cam.LookAt = _veh.transform;
             }
             else
             {
+
+                if (_cam) GameObject.Destroy(_cam.gameObject);
                 _moveSystem = null;
                 _cam.Follow = null;
                 _cam.LookAt = null;
