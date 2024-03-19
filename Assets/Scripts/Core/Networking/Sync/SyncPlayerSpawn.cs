@@ -3,6 +3,7 @@ using Assets.Scripts.Core.Other;
 using Assets.Scripts.Entities.Players;
 using Assets.Scripts.World.Locations;
 using Cinemachine;
+using Packages.DVVehicle.Core.Serialization;
 using Packages.DVVehicle.Entities.Vehicles;
 using Photon.Pun;
 using UnityEngine;
@@ -21,7 +22,6 @@ namespace Assets.Scripts.Core.Networking.Sync
 
         private PlayerControllerEntity _localPlayer;
         private VehicleEntity _localVehicle;
-
         private int _nextSpawnPointId = 0;
 
         private void Awake()
@@ -65,7 +65,10 @@ namespace Assets.Scripts.Core.Networking.Sync
             if (IsHaveFreeSpawnPoint(out var spawnPoint))
             {
                 _localPlayer = SpawnObject(_playerControllerPrefab, spawnPoint);
-                _localVehicle = SpawnObject(_vehicleSwitcher.GetSelectedVehicleInstance(), spawnPoint);
+                _localVehicle = SpawnObject(_vehicleSwitcher.GetSelectedVehiclePrefab(), spawnPoint);
+
+                var data = VehicleSerialization.GetDataFromVehicle(_vehicleSwitcher.GetSelectedVehicleInstance());
+                VehicleSerialization.ApplyTuning(_localVehicle, data.Tuning);
 
                 _localPlayer.SetControllableVehicle(_localVehicle);
             }

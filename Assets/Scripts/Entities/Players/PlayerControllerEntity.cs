@@ -44,5 +44,10 @@ namespace Assets.Scripts.Entities.Players
                 _moveSystem.SetHandBrake(Input.GetKey(KeyCode.Space));
             }
         }
+
+        private void OnDestroy()
+        {
+            if (_cam) GameObject.Destroy(_cam.gameObject);
+        }
     }
 }

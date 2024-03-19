@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Core.Networking;
+using Assets.Scripts.Core.Saving;
 using Assets.Scripts.World.Locations;
 using Packages.DVMessageBoxes.Source.Dialogs;
 using Packages.DVMessageBoxes.Source.Events;
@@ -15,7 +16,7 @@ namespace Assets.Scripts.Core
         [SerializeField] private List<Location> _locations = new();
         [Inject] private INetworkControl _networkControl;
         [Inject] private LocationSystem _locationSystem;
-
+        [Inject] private SaveSystem _saveSystem;
         [Inject] private DiContainer _container;
 
         private void Awake()
@@ -24,13 +25,41 @@ namespace Assets.Scripts.Core
         }
 
         private Location InstantiateLocationMethod(Location location)
-        { 
+        {
             return _container.InstantiatePrefabForComponent<Location>(location);
         }
 
         public void ShowConnectDialog()
         {
             new InputDialog("Connect to", "Enter the username you want to connect to. It is indicated at the top right of the garage screen.").Show().OnResponse += OnInputedConnectAddress;
+        }
+
+        public void ShowSettingsDialog()
+        {
+            new MessageDialog("Settings menu", "NOT IMPLEMENTED SETTINGS MENU", "Bad", "Very bad", null).Show();
+        }
+
+        public void ShowDonateDialog()
+        {
+            var dial = new ListDialog("Donate");
+            dial.MultiSelection = false;
+            dial.AddValues(new string[] { "100 000 $", "200 000 $", "300 000 $" }).Show().OnResponse += DonateSelected;
+        }
+
+        public void QuitGame()
+        {
+            Application.Quit();
+        }
+
+        private void DonateSelected(DialogResponseEventArgs obj)
+        {
+            if (obj.DialogButton == 0)
+            {
+                if (_saveSystem.Load(out var save))
+                {
+                    save.TryGiveMoney(100000 * (obj.SelectedItems[0] + 1));
+                }
+            }
         }
 
         private void OnInputedConnectAddress(DialogResponseEventArgs obj)

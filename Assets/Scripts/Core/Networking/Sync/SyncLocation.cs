@@ -17,9 +17,15 @@ namespace Assets.Scripts.Core.Networking.Sync
         private void Awake()
         {
             _view = GetComponent<PhotonView>();
+            _locationSystem.OnLocationChanged += OnLocationChanged;
         }
 
-        private void Update()
+        private void OnLocationChanged(Location obj)
+        {
+            UpdateLocationSync();
+        }
+
+        private void UpdateLocationSync()
         {
             if (_netControl.GetNetworkStatus() == Definitions.NetworkStatus.Host)
             {
@@ -51,6 +57,11 @@ namespace Assets.Scripts.Core.Networking.Sync
                 _locationSystem.SetLocation(mapName);
                 Debug.Log($"Location synced to {mapName}");
             }
+        }
+
+        private void OnDestroy()
+        {
+            _locationSystem.OnLocationChanged -= OnLocationChanged;
         }
     }
 }
