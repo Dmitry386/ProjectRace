@@ -51,6 +51,7 @@ namespace Assets.Scripts.Core.Other
                 _spawnedPrefab = GameObject.Instantiate(entity);
                 _spawnedPrefab.transform.SetParent(_spawnVehicleParent, true);
                 _spawnedPrefab.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                _spawnedPrefab.name = entity.name;
                 _activePrefab = entity;
             }
 
@@ -72,6 +73,11 @@ namespace Assets.Scripts.Core.Other
         public VehicleEntity GetSelectedVehiclePrefab()
         {
             return _activePrefab;
+        }
+
+        public VehicleEntity GetSelectedVehicleInstance()
+        {
+            return _spawnedPrefab;
         }
     }
 }

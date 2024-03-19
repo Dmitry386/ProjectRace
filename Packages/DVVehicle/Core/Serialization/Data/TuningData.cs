@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Packages.DVVehicle.Core.Serialization.Data
 {
@@ -7,6 +6,6 @@ namespace Packages.DVVehicle.Core.Serialization.Data
     public class TuningData
     {
         public string PaintJob;
-        public List<string> Attaches = new();
+        public string[] Attaches;
     }
 }

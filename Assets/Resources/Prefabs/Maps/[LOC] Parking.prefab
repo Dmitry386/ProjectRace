@@ -137,7 +137,6 @@ GameObject:
   - component: {fileID: 7137959880125058514}
   - component: {fileID: 7605335988607500372}
   - component: {fileID: 979435633870654418}
-  - component: {fileID: 1782324704278682890}
   m_Layer: 0
   m_Name: '[LOC] Parking'
   m_TagString: Untagged
@@ -216,19 +215,6 @@ MonoBehaviour:
   SpawnPoints:
   - {fileID: 2544770218026703488}
   - {fileID: 6307163077330311187}
---- !u!114 &1782324704278682890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7185818696493429912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8eba57d03ff82d942b42bec8691e428e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerControllerPrefab: {fileID: 2715849403622827946, guid: 09dfc5cf25099df43b2063b577c435d6, type: 3}
 --- !u!1 &7823369511680475958
 GameObject:
   m_ObjectHideFlags: 0

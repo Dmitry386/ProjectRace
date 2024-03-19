@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Core.Networking;
 using Assets.Scripts.Core.Networking.NetworkControllers;
+using Assets.Scripts.Core.Networking.Sync;
 using Assets.Scripts.Core.Other;
 using Assets.Scripts.Core.Saving;
 using Assets.Scripts.Entities.Buyable;
@@ -18,6 +19,7 @@ namespace Assets.Scripts.Core
             ContainerBindInstance<VehicleSwitcher>();
             ContainerBindInstance<TuningControl>();
             ContainerBindInstance<LocationSystem>();
+            ContainerBindInstance<SyncPlayerSpawn>();
 
             Container.BindInstance<INetworkControl>(GameObject.FindAnyObjectByType<PhotonNetworkControl>());
         }

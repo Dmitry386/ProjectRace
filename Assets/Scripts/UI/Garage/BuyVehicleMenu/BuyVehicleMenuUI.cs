@@ -18,7 +18,7 @@ namespace Assets.Scripts.UI.Garage.BuyVehicleMenu
         [Inject] private BuySystem _buySystem;
         [Inject] private SaveSystem _saveSystem;
 
-        private VehicleEntity _veh => _vehicleSwitcher.GetSelectedVehiclePrefab();
+        private VehicleEntity _veh => _vehicleSwitcher.GetSelectedVehicleInstance();
 
         private void Awake()
         {

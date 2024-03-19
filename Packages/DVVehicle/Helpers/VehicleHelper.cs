@@ -3,6 +3,7 @@ using Packages.DVVehicle.Entities.Parts;
 using Packages.DVVehicle.Entities.Vehicles;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Packages.DVVehicle.Helpers
 {
@@ -81,6 +82,34 @@ namespace Packages.DVVehicle.Helpers
             }
 
             return false;
+        }
+
+        public static bool IsHaveAnyPaintjob(VehicleEntity veh, out VehiclePaintjobApplyable paintjobPlace, out PaintjobData paintjob)
+        {
+            if (veh.TryGetComponent<VehiclePaintjobApplyable>(out paintjobPlace))
+            {
+                return paintjobPlace.IsHavePaintjob(out paintjob);
+            }
+
+            paintjob = null;
+            paintjobPlace = null;
+            return false;
+        }
+
+        public static bool IsHaveAnyAttaches(VehicleEntity veh, out List<VehicleAttachObject> attachDatas, out List<Transform> attachTransforms)
+        {
+            attachDatas = new List<VehicleAttachObject>();
+            attachTransforms = new List<Transform>();
+
+            foreach (var pos in veh.Parts.AttachPositions)
+            {
+                if (pos.IsAttachedObject(out var data, out var transform))
+                {
+                    attachDatas.Add(data);
+                    attachTransforms.Add(transform);
+                }
+            }
+            return attachDatas.Count > 0;
         }
 
         public static bool IsHavePaintjobInContainer(VehicleEntity veh, string paintjobName, out PaintjobData paintjobData)

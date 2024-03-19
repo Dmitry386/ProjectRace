@@ -14,7 +14,6 @@ namespace Packages.DVVehicle.Entities.Paintjobs
         public string PlaceName = string.Empty;
         public List<PaintjobData> AvailablePaintjobs = new();
 
-
         private PaintjobData _actualPaintjob;
         private Material[] _noPaintjob;
 

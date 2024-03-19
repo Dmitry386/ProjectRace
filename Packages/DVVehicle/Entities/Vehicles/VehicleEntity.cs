@@ -1,7 +1,6 @@
 ﻿using DVUnityUtilities;
+using DVUnityUtilities.Other.Pools;
 using Packages.DVVehicle.Definitions;
-using Packages.DVVehicle.Entities.Parts;
-using System.Linq;
 using UnityEngine;
 
 namespace Packages.DVVehicle.Entities.Vehicles
@@ -11,6 +10,11 @@ namespace Packages.DVVehicle.Entities.Vehicles
     {
         [SerializeField] public VehiclePartsData Parts;
         [SerializeField] public HandlingData Handling;
+
+        private void Awake()
+        {
+            WCache.Register(this);
+        }
 
         private void OnValidate()
         {
@@ -36,6 +40,11 @@ namespace Packages.DVVehicle.Entities.Vehicles
         public override string ToString()
         {
             return StringUtils.FromSceneNameToObjectName(name);
+        }
+
+        private void OnDestroy()
+        {
+            WCache.DeRegister(this);
         }
     }
 }
