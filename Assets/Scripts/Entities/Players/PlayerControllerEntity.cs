@@ -1,8 +1,10 @@
-﻿using Assets.Scripts.Core.Other.DriftPoints;
+﻿using Assets.Scripts.Core.Inputing;
+using Assets.Scripts.Core.Other.DriftPoints;
 using Cinemachine;
 using Packages.DVVehicle.Core.Movement;
 using Packages.DVVehicle.Entities.Vehicles;
 using UnityEngine;
+using Zenject;
 
 namespace Assets.Scripts.Entities.Players
 {
@@ -11,6 +13,8 @@ namespace Assets.Scripts.Entities.Players
         [SerializeField] private Transform _vehicleParentTransform;
         [SerializeField] private CinemachineVirtualCamera _camPrefab;
         [SerializeField] private VehicleDriftPointCounter _driftCounter;
+
+        [Inject] private IInputSystem _inputSystem;
 
         private VehicleEntity _veh;
         private VehicleMovementSystem _moveSystem;
@@ -40,12 +44,12 @@ namespace Assets.Scripts.Entities.Players
             }
         }
 
-        private void Update() // todo: mobile and pc control
+        private void Update() // todo: mobile and pc input system
         {
             if (_moveSystem)
             {
-                _moveSystem.SetMoveDirection(Input.GetAxis("Vertical"), Input.GetAxisRaw("Horizontal"));
-                _moveSystem.SetHandBrake(Input.GetKey(KeyCode.Space));
+                _moveSystem.SetMoveDirection(_inputSystem.Forward, _inputSystem.Side);
+                _moveSystem.SetHandBrake(_inputSystem.KeyDown == "HandBrake");
             }
         }
 

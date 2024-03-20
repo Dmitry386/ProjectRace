@@ -255,6 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53d8c5ab31dd3d04e948fe91a8dd2019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _customName: 
   Parts:
     WheelsFront:
     - {fileID: 77147754024098617}
@@ -328,7 +329,7 @@ MonoBehaviour:
   PossibleAttaches:
   - Name: Spoiler 1
     AttachPositionName: Spoiler
-    Prefab: {fileID: 0}
+    Prefab: {fileID: 1118418750919347724, guid: 5bfef9ac555b82f488a1eb274f47da0b, type: 3}
 --- !u!114 &-9173505201798607162
 MonoBehaviour:
   m_ObjectHideFlags: 0

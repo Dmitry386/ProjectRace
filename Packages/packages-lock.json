@@ -20,12 +20,6 @@
       "source": "embedded",
       "dependencies": {}
     },
-    "com.dmitry386.dvtimecycle": {
-      "version": "file:DVTimecycle",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
     "com.dmitry386.dvunityutilities": {
       "version": "file:DVUnityUtilities",
       "depth": 0,

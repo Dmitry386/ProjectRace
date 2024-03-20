@@ -1,5 +1,7 @@
 ﻿using Assets.Scripts.Core.Advertising;
 using Assets.Scripts.Core.Advertising.Types;
+using Assets.Scripts.Core.Inputing;
+using Assets.Scripts.Core.Inputing.Types;
 using Assets.Scripts.Core.Networking;
 using Assets.Scripts.Core.Networking.NetworkControllers;
 using Assets.Scripts.Core.Networking.Sync;
@@ -29,6 +31,15 @@ namespace Assets.Scripts.Core
 
             Container.BindInstance<INetworkControl>(GameObject.FindAnyObjectByType<PhotonNetworkControl>());
             Container.BindInstance<IAdSystem>(GameObject.FindAnyObjectByType<IronSourceAdSystem>());
+
+            if (Application.isMobilePlatform)
+            {
+                Container.BindInstance<IInputSystem>(GameObject.FindAnyObjectByType<MobileInputSystem>());
+            }
+            else
+            { 
+                Container.BindInstance<IInputSystem>(GameObject.FindAnyObjectByType<DesktopInputSystem>());
+            }
         }
 
         private void ContainerBindInstance<T>() where T : Object

@@ -8,6 +8,7 @@ namespace Packages.DVVehicle.Entities.Vehicles
     [RequireComponent(typeof(Rigidbody))]
     public class VehicleEntity : MonoBehaviour
     {
+        [SerializeField] private string _customName = string.Empty;
         [SerializeField] public VehiclePartsData Parts;
         [SerializeField] public HandlingData Handling;
 
@@ -39,7 +40,14 @@ namespace Packages.DVVehicle.Entities.Vehicles
 
         public override string ToString()
         {
-            return StringUtils.FromSceneNameToObjectName(name);
+            if (string.IsNullOrEmpty(_customName))
+            {
+                return StringUtils.FromSceneNameToObjectName(name);
+            }
+            else
+            {
+                return _customName;
+            }
         }
 
         private void OnDestroy()

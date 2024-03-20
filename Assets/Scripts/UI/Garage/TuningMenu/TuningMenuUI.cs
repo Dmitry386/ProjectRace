@@ -26,9 +26,7 @@ namespace Assets.Scripts.UI.Garage.TuningMenu
         [Inject] private BuySystem _buySystem;
         [Inject] private VehicleSwitcher _vehicleSwitcher;
         [Inject] private TuningControl _tuningControl;
-        private PlayerSaveData _saveData;
 
-        private List<string> _buyedTuning => _saveData.BuyedObjects;
         private List<GameObject> _buttons = new();
         private VehicleEntity _veh => _vehicleSwitcher.GetSelectedVehicleInstance();
 
@@ -41,8 +39,7 @@ namespace Assets.Scripts.UI.Garage.TuningMenu
         }
 
         private void OnEnable()
-        {
-            _saveSystem.Load(out _saveData);
+        { 
             OpenMainPage();
         }
 
@@ -56,7 +53,7 @@ namespace Assets.Scripts.UI.Garage.TuningMenu
         {
             if (_saveSystem.Load(out var save))
             {
-                if (save.IsHaveVehicleSaveInfo(_veh.ToString(), out var saveData))
+                if (_veh && save.IsHaveVehicleSaveInfo(_veh.ToString(), out var saveData))
                 {
                     VehicleSerialization.ApplyTuning(_veh, saveData.Tuning);
                 }

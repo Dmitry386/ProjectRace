@@ -41,7 +41,7 @@ namespace Assets.Scripts.Core
 
         public void ShowDonateDialog()
         {
-            var dial = new ListDialog("Donate");
+            var dial = new ListDialog("Donate (DEMO, ONLY FOR TESTS)");
             dial.MultiSelection = false;
             dial.AddValues(new string[] { "100 000 $", "200 000 $", "300 000 $" }).Show().OnResponse += DonateSelected;
         }

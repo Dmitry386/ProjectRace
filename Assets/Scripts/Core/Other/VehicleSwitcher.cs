@@ -22,6 +22,11 @@ namespace Assets.Scripts.Core.Other
             SetVehicle(0);
         }
 
+        public VehicleEntity[] GetAllVehiclePrefabs()
+        {
+            return _allGameVehiclesPrefabs;
+        }
+
         public void SetVehicle(int id)
         {
             if (_allGameVehiclesPrefabs.IsValidIndex(id))
@@ -59,7 +64,7 @@ namespace Assets.Scripts.Core.Other
 
         public void SwitchVehicle(int side)
         {
-            var newId = (GetSelectedVehicleId() + side) % _allGameVehiclesPrefabs.Length;
+            var newId = Mathf.Clamp(GetSelectedVehicleId() + side, 0, _allGameVehiclesPrefabs.Length - 1);
             SetVehicle(newId);
         }
 

@@ -1,8 +1,11 @@
 ﻿using Assets.Scripts.Core.Networking.Definitions;
 using Assets.Scripts.Core.Other;
+using Assets.Scripts.Core.Saving;
 using Assets.Scripts.Entities.Players;
 using Assets.Scripts.World.Locations;
 using Cinemachine;
+using DVUnityUtilities;
+using Packages.DVMessageBoxes.Source.Dialogs;
 using Packages.DVVehicle.Core.Serialization;
 using Packages.DVVehicle.Entities.Vehicles;
 using Photon.Pun;
@@ -20,10 +23,10 @@ namespace Assets.Scripts.Core.Networking.Sync
         [Inject] private INetworkControl _networkControl;
         [Inject] private LocationSystem _locationSystem;
         [Inject] private DiContainer _diContainer;
+        [Inject] private SaveSystem _saveSystem;
 
         private PlayerControllerEntity _localPlayer;
         private VehicleEntity _localVehicle;
-        private int _nextSpawnPointId = 0;
 
         private void Awake()
         {
@@ -63,7 +66,9 @@ namespace Assets.Scripts.Core.Networking.Sync
 
         private void SpawnPlayer()
         {
-            if (IsHaveFreeSpawnPoint(out var spawnPoint))
+            if (!TryResetVehicleToAnyIfNotBuyed()) return;
+
+            if (IsHaveAnySpawnPoint(_locationSystem.GetCurrentLocation(), out var spawnPoint))
             {
                 _localPlayer = SpawnObject(_playerControllerPrefab, spawnPoint);
                 _localVehicle = SpawnObject(_vehicleSwitcher.GetSelectedVehiclePrefab(), spawnPoint);
@@ -75,6 +80,52 @@ namespace Assets.Scripts.Core.Networking.Sync
             }
         }
 
+        private bool TryResetVehicleToAnyIfNotBuyed()
+        {
+            if (IsBuyedCurrentVehicle()) return true;
+
+            if (IsHaveAnyBuyedVehicleId(out int id))
+            {
+                _vehicleSwitcher.SetVehicle(id);
+                return true;
+            }
+            else
+            {
+                _networkControl?.Disconnect();
+                new MessageDialog("Error", "You haven't any vehicle to spawn on locations...", "Ok", null, "Cancel").Show();
+                return false;
+            }
+        }
+
+        private bool IsBuyedCurrentVehicle()
+        {
+            if (_saveSystem.Load(out var save))
+            {
+                return save.IsBuyed(_vehicleSwitcher.GetSelectedVehiclePrefab()?.ToString());
+            }
+            return false;
+        }
+
+        public bool IsHaveAnyBuyedVehicleId(out int id)
+        {
+            var prefabs = _vehicleSwitcher.GetAllVehiclePrefabs();
+
+            if (_saveSystem.Load(out var save))
+            {
+                for (int i = 0; i < prefabs.Length; i++)
+                {
+                    if (save.IsBuyed(prefabs[i].ToString()))
+                    {
+                        id = i;
+                        return true;
+                    }
+                }
+            }
+
+            id = -1;
+            return false;
+        }
+
         private T SpawnObject<T>(T prefab, Transform spawnPoint) where T : Component
         {
             var obj = _networkControl.Instantiate(prefab.gameObject, spawnPoint.position, spawnPoint.rotation);
@@ -82,19 +133,17 @@ namespace Assets.Scripts.Core.Networking.Sync
             return obj.GetComponent<T>();
         }
 
-        private bool IsHaveFreeSpawnPoint(out Transform spawnPoint)
+        private bool IsHaveAnySpawnPoint(Location loc, out Transform spawnPoint)
         {
-            if (_locationSystem.TryGetComponent<LocationSpawnPointsContainer>(out var container)
-                && _nextSpawnPointId < container.SpawnPoints.Count)
+            if (loc && loc.TryGetComponent<LocationSpawnPointsContainer>(out var container))
             {
-                spawnPoint = container.SpawnPoints[_nextSpawnPointId];
-                _nextSpawnPointId++;
+                spawnPoint = container.SpawnPoints.GetRandomElement();
                 return true;
             }
             else
             {
-                spawnPoint = transform;
-                return true; // todo: return false;
+                spawnPoint = null;
+                return false;
             }
         }
 

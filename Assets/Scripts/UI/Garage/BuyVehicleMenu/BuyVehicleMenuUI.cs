@@ -32,8 +32,8 @@ namespace Assets.Scripts.UI.Garage.BuyVehicleMenu
         }
         private void UpdateVehicleVisualization()
         {
-            string vehName = _veh.ToString();
-            if (_saveSystem.Load(out var save) && save.IsBuyed(vehName))
+            string vehName = _veh?.ToString();
+            if (_saveSystem.Load(out var save) && (string.IsNullOrEmpty(vehName) || save.IsBuyed(vehName)))
             {
                 _buyButton.gameObject.SetActive(false);
             }

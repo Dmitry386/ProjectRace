@@ -31,7 +31,7 @@ namespace Packages.DVVehicle.Entities.Parts
         {
             if (_currentObject)
             {
-                GameObject.Destroy(_currentObject);
+                GameObject.Destroy(_currentObject.gameObject);
                 _currentObject = null;
             }
 
