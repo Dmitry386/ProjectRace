@@ -55,6 +55,7 @@ namespace Assets.Scripts.World.Locations
 
         public float GetRemainingTime()
         {
+            if (_networkControl.GetNetworkStatus() != NetworkStatus.Host) return -1;
             return _timeInSeconds - Mathf.Clamp(Time.time - _startTimerMoment, 0, _timeInSeconds);
         }
     }

@@ -24,7 +24,8 @@ namespace Assets.Scripts.UI.Garage.TextDisplays
 
         private void UpdateValue(float v)
         {
-            _textMeshPro.text = string.Format(_printFormat,((int)v).ToString());
+            if (v < 0) _textMeshPro.text = string.Empty;
+            else _textMeshPro.text = string.Format(_printFormat, ((int)v).ToString());
         }
     }
 }
