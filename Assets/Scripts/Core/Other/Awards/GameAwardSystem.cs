@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Core.Other.DriftPoints;
+﻿using Assets.Scripts.Core.Advertising;
+using Assets.Scripts.Core.Other.DriftPoints;
 using Assets.Scripts.Core.Saving;
 using Packages.DVMessageBoxes.Source.Dialogs;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace Assets.Scripts.Core.Other.Awards
 
         [Inject] private SaveSystem _saveSystem;
         [Inject] private VehicleDriftGlobalController _controller;
+        [Inject] private IAdSystem _adManager;
 
         private void Awake()
         {
@@ -25,26 +27,34 @@ namespace Assets.Scripts.Core.Other.Awards
 
         public void ShowAwardRequest(string text, int money)
         {
-            var dial = new MessageDialog("Reward", text, "Ok", "X2", null);
-            dial.OnResponse += (e) =>
+            if (Application.isMobilePlatform)
             {
-                if (e.DialogButton == 0)
+                var dial = new MessageDialog("Reward", text, "Ok", "X2", null);
+                dial.OnResponse += (e) =>
                 {
-                    GiveAwardWithoutAd(money);
-                }
-                if (e.DialogButton == 1)
-                {
-                    GiveAwardWithAd((int)(money * _advertisingAwardMultiplier));
-                }
-            };
-            dial.Show();
+                    if (e.DialogButton == 0)
+                    {
+                        GiveAwardWithoutAd(money);
+                    }
+                    if (e.DialogButton == 1)
+                    {
+                        GiveAwardWithAd((int)(money * _advertisingAwardMultiplier));
+                    }
+                };
+                dial.Show();
+            }
+            else
+            {
+                GiveAwardWithoutAd(money);
+            }
         }
 
         public void GiveAwardWithAd(int money)
         {
             if (_saveSystem.Load(out var save))
             {
-                // todo: ADDDDDDDDDDDDDD    
+                save.TryGiveMoney(money); // todo: security from skip/wifi disable (?)
+                _adManager.ShowRewardVideo();
             }
         }
 
