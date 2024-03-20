@@ -8,6 +8,7 @@ namespace Assets.Scripts.Core.Saving
     [DefaultExecutionOrder(-1000)]
     internal class SaveSystem : MonoBehaviour
     {
+        [SerializeField] private bool _autoSaveOnQuit = false;
         [SerializeField] private string _file = "save.json";
         [SerializeField] private PlayerSaveData _defaultSaveDataIfNoneSave = new();
         private PlayerSaveData _loadedData;
@@ -18,6 +19,17 @@ namespace Assets.Scripts.Core.Saving
             {
                 _defaultSaveDataIfNoneSave.PlayerName = Guid.NewGuid().ToString().Substring(0, 5); // todo: name system in future...
                 _loadedData = _defaultSaveDataIfNoneSave;
+            }
+        }
+
+        private void OnApplicationQuit()
+        {
+            if (_autoSaveOnQuit)
+            {
+                if (Load(out var save))
+                {
+                    Save(save);
+                }
             }
         }
 
