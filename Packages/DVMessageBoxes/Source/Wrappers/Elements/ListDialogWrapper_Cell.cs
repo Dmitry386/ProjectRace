@@ -11,8 +11,7 @@ namespace Packages.DVMessageBoxes.Source.Wrappers.Elements
         public event Action<ListDialogWrapper_Cell> OnCellClick;
 
         private TextMeshProUGUI _text => GetComponentInChildren<TextMeshProUGUI>();
-        [SerializeField] private Color32 _selectionColor = new Color32(200, 0, 0, 255);
-
+        private Color32 _selectionColor;
         private Color32 _notSelectedColor;
         private Button _button;
 
@@ -21,6 +20,7 @@ namespace Packages.DVMessageBoxes.Source.Wrappers.Elements
         private void Awake()
         {
             _button = GetComponent<Button>();
+            _selectionColor = _button.colors.selectedColor;
             _notSelectedColor = _button.colors.normalColor;
             _button.onClick.AddListener(OnClickButton);
         }
