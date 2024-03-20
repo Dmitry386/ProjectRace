@@ -46,7 +46,7 @@ namespace Assets.Scripts.Core.Other.DriftPoints
 
         private void OnDestroy()
         {
-            if (_registerDriftPointsOnDestroy)
+            if (_registerDriftPointsOnDestroy && _controller)
             {
                 RegisterFinalDriftPoints();
             }

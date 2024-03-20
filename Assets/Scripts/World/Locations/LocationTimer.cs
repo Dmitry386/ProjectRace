@@ -28,7 +28,10 @@ namespace Assets.Scripts.World.Locations
 
         private void OnLocationChanged(Location obj)
         {
-            StartTimer();
+            if (_networkControl.GetNetworkStatus() == NetworkStatus.Host)
+            {
+                StartTimer();
+            }
         }
 
         private void StartTimer()
